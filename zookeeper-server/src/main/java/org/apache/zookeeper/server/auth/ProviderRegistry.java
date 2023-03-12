@@ -43,6 +43,7 @@ public class ProviderRegistry {
     }
 
     public static void initialize() {
+        LOG.error("----- init Provider Registry");
         synchronized (ProviderRegistry.class) {
             IPAuthenticationProvider ipp = new IPAuthenticationProvider();
             DigestAuthenticationProvider digp = new DigestAuthenticationProvider();
@@ -67,10 +68,12 @@ public class ProviderRegistry {
     }
 
     public static ServerAuthenticationProvider getServerProvider(String scheme) {
+        LOG.error("----- get Provider schema {}", scheme);
         return WrappedAuthenticationProvider.wrap(getProvider(scheme));
     }
 
     public static AuthenticationProvider getProvider(String scheme) {
+        LOG.error("----- get Provider schema {}", scheme);
         if (!initialized) {
             initialize();
         }

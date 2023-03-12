@@ -20,10 +20,14 @@ package org.apache.zookeeper.server.auth;
 
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.server.ServerCnxn;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SASLAuthenticationProvider implements AuthenticationProvider {
+    private static Logger LOG = LoggerFactory.getLogger(SASLAuthenticationProvider.class);
 
     public String getScheme() {
+        LOG.error("=== run in getSchema");
         return "sasl";
     }
 
@@ -31,11 +35,14 @@ public class SASLAuthenticationProvider implements AuthenticationProvider {
         // Should never call this: SASL authentication is negotiated at session initiation.
         // TODO: consider substituting current implementation of direct ClientCnxn manipulation with
         // a call to this method (SASLAuthenticationProvider:handleAuthentication()) at session initiation.
+        LOG.error("=== run in handleAuthentication, ServerCnxn: " + cnxn.getAuthInfo().size() + ", authData: " + new String(authData));
+        LOG.error("=== run in handleAuthentication, ServerCnxn: " + cnxn.getAuthInfo().get(0).getScheme() + ", " + cnxn.getAuthInfo().get(0).getId() + ", authData: " + new String(authData));
         return KeeperException.Code.AUTHFAILED;
 
     }
 
     public boolean matches(String id, String aclExpr) {
+        LOG.error("=== run in matches, id: " + id + ", aclExpr: " + aclExpr);
         if ((id.equals("super") || id.equals(aclExpr))) {
             return true;
         }
@@ -44,10 +51,12 @@ public class SASLAuthenticationProvider implements AuthenticationProvider {
     }
 
     public boolean isAuthenticated() {
+        LOG.error("==== run in isAuthenticated");
         return true;
     }
 
     public boolean isValid(String id) {
+        LOG.error("==== run in isValid, id: " + id);
         // Since the SASL authenticator will usually be used with Kerberos authentication,
         // it should enforce that these names are valid according to Kerberos's
         // syntax for principals.
@@ -57,7 +66,8 @@ public class SASLAuthenticationProvider implements AuthenticationProvider {
         // otherwise, it is valid.
         //
         try {
-            new KerberosName(id);
+            KerberosName kn = new KerberosName(id);
+            LOG.error("=== in isValid, " + kn.getHostName() + " " + kn.toString());
             return true;
         } catch (IllegalArgumentException e) {
             return false;

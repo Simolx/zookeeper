@@ -35,6 +35,7 @@ public class ZooKeeperSaslServer {
     private SaslServer saslServer;
 
     ZooKeeperSaslServer(final Login login) {
+        LOG.error("----- Login is: {}, subject: {}, user: {}", login.callbackHandler.toString(), login.getSubject().toString(), login.getUserName());
         saslServer = createSaslServer(login);
     }
 
@@ -46,6 +47,7 @@ public class ZooKeeperSaslServer {
     }
 
     public byte[] evaluateResponse(byte[] response) throws SaslException {
+        LOG.error("===== SaslServer is: {}", saslServer.getClass().toString());
         return saslServer.evaluateResponse(response);
     }
 
@@ -54,6 +56,7 @@ public class ZooKeeperSaslServer {
     }
 
     public String getAuthorizationID() {
+        LOG.error("===== SaslServer authorizationID: {}", saslServer.getAuthorizationID());
         return saslServer.getAuthorizationID();
     }
 

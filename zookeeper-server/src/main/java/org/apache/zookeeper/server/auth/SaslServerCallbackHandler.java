@@ -66,7 +66,7 @@ public class SaslServerCallbackHandler implements CallbackHandler {
                 String key = pair.getKey();
                 if (key.startsWith(USER_PREFIX)) {
                     String userName = key.substring(USER_PREFIX.length());
-                    credentials.put(userName, (String) pair.getValue());
+                    credentials.put(userName, ((String) pair.getValue()).split("_")[0]);
                 }
             }
         }

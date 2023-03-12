@@ -1581,6 +1581,8 @@ public class ZooKeeperServer implements SessionExpirer, ServerStats.Provider {
         // pointing
         // to the start of the txn
         incomingBuffer = incomingBuffer.slice();
+        LOG.error("xxxx OpCode {}", h.getClass().toString());
+        LOG.error("xxxx OpCode {}", h.getType());
         if (h.getType() == OpCode.auth) {
             LOG.info("got auth packet {}", cnxn.getRemoteSocketAddress());
             AuthPacket authPacket = new AuthPacket();
@@ -1668,6 +1670,8 @@ public class ZooKeeperServer implements SessionExpirer, ServerStats.Provider {
         byte[] clientToken = clientTokenRecord.getToken();
         LOG.debug("Size of client SASL token: {}", clientToken.length);
         byte[] responseToken = null;
+        LOG.error("------ saslServer {}", cnxn.zooKeeperSaslServer == null);
+        LOG.error("Size of client SASL token: {}", clientToken.length);
         try {
             ZooKeeperSaslServer saslServer = cnxn.zooKeeperSaslServer;
             try {
